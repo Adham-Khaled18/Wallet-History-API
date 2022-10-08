@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
-import User from 'App/Models/User'
 import Wallet from './Wallet'
+
 
 export default class Transaction extends BaseModel {
   @column({ isPrimary: true })
@@ -14,18 +14,10 @@ export default class Transaction extends BaseModel {
   public amount: number
 
   @column()
-  public owner_id: number
-
-  @column()
   public wallet_id: number
 
   @column()
   public category: string
-
-  @belongsTo(()=>User,{
-    localKey: 'owner_id'
-  })
-  public user : BelongsTo<typeof User>
 
   @belongsTo(()=>Wallet,{
     localKey: 'wallet_id'

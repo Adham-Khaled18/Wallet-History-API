@@ -3,23 +3,18 @@ import AuthService from "App/Services/AuthServices";
 import SignupValidator from "App/Validators/SignupValidator";
 import User from 'App/Models/User';
 import LoginValidator from 'App/Validators/LoginValidator';
-import Mail from '@ioc:Adonis/Addons/Mail'
+
+
 
 export default class UsersController {
 
 
-    public async signup({ request, response }: HttpContextContract) {
+    public async signup({ request, response,session}: HttpContextContract) {
         const payload = await request.validate(SignupValidator)
         const user = await User.create(payload)
 
         //verify email
-        Mail.send((message) => {
-            message
-              .from('verify@adonisgram.com')
-              .to(user.email)
-              .subject('Verify Email')
-              .htmlView('emails/verify', { user })
-          })
+        AuthService.SendEmail(user,session)
 
         return response.send(user)
     }
@@ -31,4 +26,17 @@ export default class UsersController {
         const { type, token } = await auth.attempt(uid, password)
         return response.send({ ...{ type, token }, user })
     }
+
+    public async verify({response,params,session}:HttpContextContract){
+        const token = params.token
+        const user_id = params.user_id
+        console.log(session.all())
+        if(await AuthService.VerifyEmail(user_id,token,session)){
+            return response.send('Verified!')
+        }else{
+            return response.send('invalid!')
+        }
+        
+    }
+        
 }

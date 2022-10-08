@@ -20,7 +20,7 @@ export default class Wallet extends BaseModel {
   public balance:number
 
   @belongsTo(()=>User,{
-    localKey:'owner_id'
+    localKey: 'owner_id'
   })
   public user:BelongsTo<typeof User>
 

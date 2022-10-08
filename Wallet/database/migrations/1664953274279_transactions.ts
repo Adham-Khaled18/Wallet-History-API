@@ -9,8 +9,6 @@ export default class extends BaseSchema {
       table.enu('type',['expenses','income']).notNullable()
       table.decimal('amount').notNullable()
       table.string('category').nullable()
-      table.integer('owner_id').notNullable().unsigned()
-      table.foreign('owner_id').references('users.id')
       table.integer('wallet_id').notNullable().unsigned()
       table.foreign('wallet_id').references('wallets.id')
       table.timestamp('created_at', { useTz: true })

@@ -23,6 +23,7 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.post('/signup','UsersController.signup')
 Route.post('/login','UsersController.login')
+Route.get('/confirm-email/:user_id/:token','UsersController.verify')
 
 Route.group(()=>{
     Route.post('/add','TransactionsController.addTransaction')
@@ -30,10 +31,11 @@ Route.group(()=>{
     Route.delete('/delete/:id','TransactionsController.deleteTransaction')
     Route.get('/view','TransactionsController.view')
     Route.get('/view/:id','TransactionsController.viewTime')
-    Route.get('/view/analytic','TransactionsController.analytic')
+    Route.post('/view/analytic','TransactionsController.analytic')
 
     Route.post('/wallet/create','WalletsController.create')
     Route.get('/wallet/view','WalletsController.view')
     Route.get('/wallet/view/:id','WalletsController.view')
 
+    
 }).middleware('auth')

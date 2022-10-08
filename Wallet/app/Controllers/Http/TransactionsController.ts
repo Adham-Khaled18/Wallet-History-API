@@ -8,17 +8,17 @@ import UpdateTransactionValidator from 'App/Validators/UpdateTransactionValidato
 export default class TransactionsController {
     public async addTransaction({ request, response, auth }) {
         const payload = await request.validate(AddTransactionValidator)
-        payload.owner_id = await auth.user!.id
+        const owner_id = await auth.user!.id
         const processed = await TransactionService.ProcessAmount(payload)
         const transaction = await Transaction.create(processed)
-        await TransactionService.CalculateBalance(payload.owner_id, payload.wallet_id)
+        await TransactionService.CalculateBalance(owner_id, payload.wallet_id)
         return response.send(transaction)
 
     }
     public async updateTransaction({ request, response, auth, params }: HttpContextContract) {
         const owner_id = auth.user!.id
         const update = await request.validate(UpdateTransactionValidator)
-        const transaction: Transaction = await TransactionService.UpdateTransaction(params.id, owner_id, update)
+        const transaction: Transaction = await TransactionService.UpdateTransaction(params.id, update)
         await TransactionService.CalculateBalance(owner_id, update.wallet_id)
         return response.send(transaction)
     }
