@@ -23,7 +23,7 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.post('/signup','UsersController.signup')
 Route.post('/login','UsersController.login')
-Route.get('/confirm-email/:user_id/:token','UsersController.verify')
+Route.get('/confirm-email/:email','UsersController.verify').as('verifyEmail')
 
 Route.group(()=>{
     Route.post('/add','TransactionsController.addTransaction')
